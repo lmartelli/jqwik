@@ -10,6 +10,25 @@ import net.jqwik.api.providers.*;
 
 class ContextWithProviderMethods extends DomainContextBase {
 
+	static class Thing {
+		public String value;
+		public Thing(String value) {
+			this.value = value;
+		}
+	}
+
+	@Provide
+	Arbitrary<Thing> things() {
+		return Arbitraries.strings().map(Thing::new);
+	}
+
+	@Provide
+	ListArbitrary<Thing> listOfThings() {
+		return numberStrings()
+				   .map(Thing::new)
+				   .list();
+	}
+
 	@Provide
 	StringArbitrary numberStrings() {
 		return Arbitraries.strings().numeric().ofLength(2);
